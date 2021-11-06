@@ -1,0 +1,14 @@
+{
+  "scripts": {
+    "dev": "nodemon"
+  },
+  "dependencies": {
+    "@babel/cli": "^7.16.0",
+    "@babel/core": "^7.16.0",
+    "@babel/node": "^7.16.0",
+    "@babel/preset-env": "^7.16.0",
+    "express": "^4.17.1",
+    "nodemon": "^2.0.14",
+    "pug": "^3.0.2"
+  }
+}
