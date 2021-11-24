@@ -126,9 +126,23 @@ socket.on("answer", answer => {
     myPeerConnection.setRemoteDescription(answer);
 });
 
+socket.on("ice", ice => {
+    myPeerConnection.addICECandidate(ice);
+});
+
 // RTC Code
 
 function makeConnection() {
     const myPeerConnection = new RTCPeerConnection();
+    myPeerConnection.addEventListener("icecandidate", handleIce);
+    myPeerConnection.addEventListener("addstream", handleAddStream);
     myStream.getTracks().forEach(track => myPeerConnection.addTrack(track, myStream));
+}
+
+function handleIce(data) {
+    socket.emit("ice", data.candidate, roomName);
+}
+function handleAddStream(data) {
+    const peersStream = document.getElementById("peerFace");
+    peersStream.srcObject = data.stream;
 }
