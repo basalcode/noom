@@ -83,6 +83,12 @@ function handleCameraClick() {
 
 async function handleCameraChange() {
     await getMedia(camerasSelect.value);
+
+    if (myPeerConnection) {
+        const videoTrack = myStream.getVideoTracks()[0];
+        const videoSender = myPeerConnection.getSenders().find((sender) => sender.track.kind === "video");
+        videoSender.replaceTrack(videoTrack);
+    }
 }
 
 muteBtn.addEventListener("click", handleMuteClick)
@@ -131,7 +137,6 @@ socket.on("ice", ice => {
 });
 
 // RTC Code
-
 function makeConnection() {
     const myPeerConnection = new RTCPeerConnection();
     myPeerConnection.addEventListener("icecandidate", handleIce);
@@ -142,6 +147,7 @@ function makeConnection() {
 function handleIce(data) {
     socket.emit("ice", data.candidate, roomName);
 }
+
 function handleAddStream(data) {
     const peersStream = document.getElementById("peerFace");
     peersStream.srcObject = data.stream;
